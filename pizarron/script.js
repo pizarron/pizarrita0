@@ -186,3 +186,11 @@ $('#professorNotesSelector').click( function () {
 	$('#bestNotesSection').hide();
 	$('#professorNotesSection').toggle();
 });
+
+// Send message to CourseClass chat.
+$('#chat-textarea').keyup( function (e) {
+	if(e.keyCode == 13) {
+		$('.chat-section-messages').append('<div class="talk-bubble tri-left right-top response-bubble round"><span class="msg-sender">jhtan</span><div class="talktext"><p>' + $(this).val() + '</p></div></div>');
+		$(this).val('');
+	}
+});
