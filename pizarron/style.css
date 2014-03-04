@@ -1,0 +1,181 @@
+body {
+    /*background-color: #d0d0d0;*/
+}
+#whiteboardTools {
+    width: 100;
+    float: left;
+}
+#canvasDiv {
+    background-color: #356444;
+    width: 700;
+    float: left;
+    margin: 20px 20px 20px 20px;
+}
+.toolsButton {
+    display: block;
+    border-style: solid;
+    border-color: #bbb #888 #666 #aaa;
+    border-width: 1px 2px 2px 2px;
+    width: 50px;
+    background:#ccc;
+    color:#333;
+}
+.toolsButton:hover {
+    border-color: #666 #aaa #bbb #888;
+    border-widthf: 2px 1px 1px 2px;
+    color: #000;
+}
+
+
+
+#class-options {
+    float: right; 
+    margin-right: -30px;
+}
+#class-options .class-options-selectors {
+    float: left;
+    color: #ffffff;
+}
+#class-options .class-options-selectors .section-selector {
+    width: 90px;
+    height: 90px;
+    text-align: center;
+}
+#class-options .class-options-selectors .chat-selector {
+    padding-top: 37px;
+    background-color: #16a085;
+}
+#class-options .class-options-selectors .my-notes-selector {
+    padding-top: 37px;
+    background-color: #34495e;
+}
+#class-options .class-options-selectors .best-notes-selector {
+    padding-top: 37px;
+    background-color: #8e44ad;
+}
+#class-options .class-options-selectors .professor-notes-selector {
+    padding-top: 25px;
+    background-color: #2980b9;
+}
+#class-options .section-container {
+    width: 330px;
+    height: 650px;
+    float: left;
+    padding: 15px 10px 15px 15px;
+}
+#class-options .chat-section {
+    background-color: #16a085;
+}
+#class-options .chat-section textarea {
+    resize: none;
+    margin-top: 15px;
+    float: left;
+}
+#class-options .my-notes-section {
+    background-color: #34495e;
+}
+#class-options .best-notes-section {
+    background-color: #8e44ad;
+}
+#class-options .professor-notes-section {
+    background-color: #2980b9;
+}
+
+.container {
+    padding: 5% 5%;
+}
+.talktext{
+    padding-top: 6px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    text-align: left;
+    line-height: 1.5em;
+}
+.talktext p{
+    -webkit-margin-before: 0em;
+    -webkit-margin-after: 0em;
+}
+.talk-bubble {
+    margin: 8px 25px 8px 20px;
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: auto;
+    background-color: #e0e7e8;
+}
+.response-bubble {
+    float: right;
+}
+.border{
+    border: 8px solid #666;
+}
+.round{
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+}
+.tri-right.border.left-top:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -40px;
+    right: auto;
+    top: -8px;
+    bottom: auto;
+    border: 32px solid;
+    border-color: #666 transparent transparent transparent;
+}
+.tri-right.left-top:after{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -20px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    border: 22px solid;
+    border-color: #e0e7e8 transparent transparent transparent;
+}
+.tri-left.border.right-top:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -40px;
+    right: auto;
+    top: -8px;
+    bottom: auto;
+    border: 32px solid;
+    border-color: #666 transparent transparent transparent;
+}
+.tri-left.right-top:after{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 177px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    border: 22px solid;
+    border-color: #e0e7e8 transparent transparent transparent;
+}
+.msg-sender {
+    padding-left: 30px;
+    font-size: 13px;
+    font-style: italic;
+}
+.box-notes {
+    background-color: #dff0d8;
+    height: 250px;
+    padding: 15px 15px 15px 15px;
+}
+.textarea-notes {
+    background-color: #dff0d8;
+    resize: none;
+    margin-bottom: 10px;
+    float: left;
+}
