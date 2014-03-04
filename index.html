@@ -544,31 +544,67 @@
             <!-- Miyoo!!!...... -->
             <link rel="stylesheet" type="text/css" href="pizarron/style.css">
 
-            <div id="whiteboardTools">
-                <b>Tools</b>
-                <br><br><div id="toolsClearBtn" class="toolsButton">Clear</div>
-                <br><div id="eraserTool" class="toolsButton">Eraser</div>
+            <div id="whiteboard">
+                <div id="canvasDiv"></div>
+                <div id="whiteboardTools">
+                    <div class="whiteboard-tool">
+                        <button id="toolsClearBtn" type="button" class="btn btn-default">
+                            Clear
+                        </button>
+                    </div>
 
-                <br>Colors
-                <div class="toolsButton changeColor" data-color="#ffffff">White</div>
-                <div class="toolsButton changeColor" data-color="#000000">Black</div>
-                <div class="toolsButton changeColor" data-color="#cb3594">Purple</div>
-                <div class="toolsButton changeColor" data-color="#ffcf33">Yellow</div>
-                <div class="toolsButton changeColor" data-color="#986928">Brown</div>
+                    <div class="whiteboard-tool">
+                        <button id="eraserTool" type="button" class="btn btn-default">
+                            <i class="fa fa-eraser"></i>
+                        </button>
+                    </div>
 
-                <br>Pencil Size
-                <div class="toolsButton changePencilSize" data-pencil-size="4">Small</div>
-                <div class="toolsButton changePencilSize" data-pencil-size="8">Normal</div>
-                <div class="toolsButton changePencilSize" data-pencil-size="25">Large</div>
-                <div class="toolsButton changePencilSize" data-pencil-size="35">Huge</div>
+                    <div class="whiteboard-tool">
+                        <button type="button" class="changeColor btn btn-white btn-sm" data-color="#ffffff">
+                            <i class="fa fa-pencil fa-2x"></i>
+                        </button>
+                        <button type="button" class="changeColor btn btn-black btn-sm" data-color="#000000">
+                            <i class="fa fa-pencil fa-2x"></i>
+                        </button>
+                        <button type="button" class="changeColor btn btn-purple btn-sm" data-color="#cb3594">
+                            <i class="fa fa-pencil fa-2x"></i>
+                        </button>
+                        <button type="button" class="changeColor btn btn-yellow btn-sm" data-color="#ffcf33">
+                            <i class="fa fa-pencil fa-2x"></i>
+                        </button>
+                        <button type="button" class="changeColor btn btn-brown btn-sm" data-color="#986928">
+                            <i class="fa fa-pencil fa-2x"></i>
+                        </button>
+                    </div>
 
-                <br>Blackboard Color
-                <div class="toolsButton changeBlackboardColor" data-blackboard-color="#356444">Green</div>
-                <div class="toolsButton changeBlackboardColor" data-blackboard-color="#ffffff">White</div>
-                <div class="toolsButton changeBlackboardColor" data-blackboard-color="#d1d1d1">Gray</div>
+                    <div class="whiteboard-tool">
+                        <button type="button" class="changePencilSize btn btn-default btn-xs" data-pencil-size="4">
+                            <i class="fa fa-circle fa-1x"></i>
+                        </button>
+                        <button type="button" class="changePencilSize btn btn-default btn-xs" data-pencil-size="8">
+                            <i class="fa fa-circle fa-2x"></i>
+                        </button>
+                        <button type="button" class="changePencilSize btn btn-default btn-xs" data-pencil-size="25">
+                            <i class="fa fa-circle fa-3x"></i>
+                        </button>
+                        <button type="button" class="changePencilSize btn btn-default btn-xs" data-pencil-size="35">
+                            <i class="fa fa-circle fa-4x"></i>
+                        </button>
+                    </div>
+
+                    <div class="whiteboard-tool">
+                        <button type="button" class="changeBlackboardColor btn btn-green" data-blackboard-color="#356444">
+                            <i class="fa fa-th-large"></i>
+                        </button>
+                        <button type="button" class="changeBlackboardColor btn btn-white" data-blackboard-color="#ffffff">
+                            <i class="fa fa-th-large"></i>
+                        </button>
+                        <button type="button" class="changeBlackboardColor btn btn-gray" data-blackboard-color="#d1d1d1">
+                            <i class="fa fa-th-large"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <div id="canvasDiv"></div>
 
             <div id="class-options">
                 <div class="class-options-selectors">

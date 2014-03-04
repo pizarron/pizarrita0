@@ -1,14 +1,17 @@
 body {
     /*background-color: #d0d0d0;*/
 }
+#whiteboard {
+    float: left;   
+}
 #whiteboardTools {
     width: 100;
-    float: left;
+    /*float: left;*/
 }
 #canvasDiv {
     background-color: #356444;
     width: 700;
-    float: left;
+    /*float: left;*/
     margin: 20px 20px 20px 20px;
 }
 .toolsButton {
@@ -24,6 +27,31 @@ body {
     border-color: #666 #aaa #bbb #888;
     border-widthf: 2px 1px 1px 2px;
     color: #000;
+}
+.whiteboard-tool {
+    padding: 10px 10px 10px 10px;
+    float: left;
+}
+.btn-white {
+    background-color: #ffffff;
+}
+.btn-black {
+    background-color: #222222;
+}
+.btn-purple {
+    background-color: #cb3594;
+}
+.btn-yellow {
+    background-color: #ffcf33;
+}
+.btn-brown {
+    background-color: #986928;
+}
+.btn-green {
+    background-color: #356444;
+}
+.btn-gray {
+    background-color: #d1d1d1;
 }
 
 
