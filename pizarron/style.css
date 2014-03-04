@@ -30,7 +30,9 @@ body {
 
 #class-options {
     float: right; 
-    margin-right: -30px;
+    position: absolute;
+    right: 0;
+
 }
 #class-options .class-options-selectors {
     float: left;
