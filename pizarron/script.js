@@ -190,7 +190,19 @@ $('#professorNotesSelector').click( function () {
 // Send message to CourseClass chat.
 $('#chat-textarea').keyup( function (e) {
 	if(e.keyCode == 13) {
-		$('.chat-section-messages').append('<div class="talk-bubble tri-left right-top response-bubble round"><span class="msg-sender">jhtan</span><div class="talktext"><p>' + $(this).val() + '</p></div></div>');
-		$(this).val('');
+		var message = {"message": $(this).val(), "user": "me"};
+		socketChat.emit("message_to_server", message);
+		$('#chat-textarea').val('');
 	}
+});
+
+/* Call socket chat */
+var socketChat = io.connect("http://localhost:9090/chat"); // Socket Chat
+socketChat.on("message", function(message) {
+	$('.chat-section-messages').append('<div class="talk-bubble tri-right left-top round"><span class="msg-sender">' + message.user + '</span><div class="talktext"><p>' + message.message + '</p></div></div>');
+	$('#chat-textarea').val('');
+});
+
+socketChat.on("message_to_client", function(message) {
+	$('.chat-section-messages').append('<div class="talk-bubble tri-left right-top response-bubble round"><span class="msg-sender">' + message.user +'</span><div class="talktext"><p>' + message.message + '</p></div></div>');
 });
