@@ -72,56 +72,67 @@ var pizarrita = ( function () {
 
     // User events.
     createUserEvents = function () {
-	var $canvas = $('#canvas');
+		var $canvas = $('#canvas');
 
-	$canvas.mousedown(function(e){
-	    var mouseX = e.pageX - this.offsetLeft,
-	    mouseY = e.pageY - this.offsetTop;
-	    
-	    paint = true;
-	    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-	    redraw();
-	});
+		$canvas.mousedown(function(e){
+		    var mouseX = e.pageX - this.offsetLeft,
+		    mouseY = e.pageY - this.offsetTop;
+		    
+		    paint = true;
+		    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+		    redraw();
+		});
 
-	$canvas.mousemove(function(e){
-	    if(paint){
-		addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-		redraw();
-	    }
-	});
+		$canvas.mousemove(function(e){
+		    if(paint){
+			addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+			redraw();
+		    }
+		});
 
-	$canvas.mouseup(function(e){
-	    paint = false;
-	});
+		$canvas.mouseup(function(e){
+		    paint = false;
+		});
 
-	$canvas.mouseleave(function(e){
-	    paint = false;
-	});
+		$canvas.mouseleave(function(e){
+		    paint = false;
+		});
 
-	$('#toolsClearBtn').click( function () {
-	    clearCanvas();
-	});
+		$('#toolsClearBtn').click( function () {
+		    clearCanvas();
+		});
 
-	$('.changeColor').click( function () {
-	    selectedColor = $(this).data('color');
-	});
+		$('.changeColor').click( function () {
+		    selectedColor = $(this).data('color');
+		    $('.changeColor').css('border', '');
+		    $(this).css('border', 'solid 3px black');
+		});
 
-	$('.changePencilSize').click( function () {
-	    selectedRadius = $(this).data('pencil-size');
-	});
+		$('.changePencilSize').click( function () {
+		    selectedRadius = $(this).data('pencil-size');
+		    $('.changePencilSize').css('border', '');
+		    $(this).css('border', 'solid 3px black');
+		});
 
-	$('#eraserTool').click( function () {
-	    if(erasingOn)
-		erasingOn = false;
-	    else
-		erasingOn = true;
-	});
+		$('#eraserTool').click( function () {
+		    if(erasingOn) {
+		    	$(this).css('border', '');
+		    	$('.changeColor').removeClass('disabled');
+				erasingOn = false;
+		    } else {
+		    	$(this).css('border', 'solid 3px black');
+		    	$('.changeColor').addClass('disabled');
+				erasingOn = true;
+		    }
+		});
 
-	$('.changeBlackboardColor').click( function () {
-	    $('#canvasDiv').css('background-color', $(this).data('blackboard-color'));
-	    backgroundColor = $(this).data('blackboard-color');
-	    redraw();
-	});
+		$('.changeBlackboardColor').click( function () {
+		    $('#canvasDiv').css('background-color', $(this).data('blackboard-color'));
+		    backgroundColor = $(this).data('blackboard-color');
+		    redraw();
+		   	$('.changeBlackboardColor').css('border', '');
+		    $(this).css('border', 'solid 3px black'); 
+		});
     },
 
     // Init.
