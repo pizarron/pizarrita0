@@ -1,5 +1,5 @@
-var pizarrita = ( function () {
-    
+﻿var pizarrita = (function () {
+
     "use strict";
 
     var canvas,
@@ -18,7 +18,7 @@ var pizarrita = ( function () {
     backgroundColor = '#356444',
     erasingOn = false,
     //board socket
-    currentRoom = 'room002',
+    currentRoom = 'room001',
     joined = false,
     // Clears the Canvas.
     clearCanvas = function () {
@@ -65,15 +65,14 @@ var pizarrita = ( function () {
         clickDrag.push(dragging);
         clickRadius.push(selectedRadius);
         if (erasingOn) {
-            clickColor.push('background');   
+            clickColor.push('background');
         } else {
             clickColor.push(selectedColor);
         }
-        if (joined) {
-            sentData(x, y, dragging);
-        }
+        //if (joined) {
+        //    sentData(x, y);
+        //}
     },
-
     // User events.
     createUserEvents = function () {
         var $canvas = $('#canvas');
@@ -136,10 +135,13 @@ var pizarrita = ( function () {
             $('.changeBlackboardColor').css('border', '');
             $(this).css('border', 'solid 3px black');
         });
-        
+
         //join curren room
         $('#joinRoom').click(function () {
             joinRoom();
+        });
+        $('#joinRoom2').click(function () {
+            joinRoom2();
         })
     },
     joinRoom = function () {
@@ -148,92 +150,111 @@ var pizarrita = ( function () {
             joined = true;
         }
     },
+    joinRoom2 = function () {
+        //if (!joined) {
+        socketBoard.emit('join_room', 'room002');
+        joined = true;
+        //}
+    },
     //only teacher can send data
-    sentData = function (x, y, dragging) {
-        var color = selectedColor;
-        if (erasingOn) {
-            color = 'background';
-        }
-        socketBoard.emit('send_data', {
-            room: currentRoom,
-            data: {
-                x: x,
-                y: y,
-                radius: selectedRadius,
-                color: color,
-                dragging: dragging,
-            }
-        });
+    //sentData = function (x, y) {
+    //    socketBoard.emit('send_data', {
+    //        room: currentRoom,
+    //        data: {
+    //            x: x,
+    //            y: y,
+    //            radius: selectedRadius,
+    //            color: selectedColor,
+    //        }
+    //    });
+    //},
+    //receiveData
+    receiveData = function (data) {
+        clickX.push(data.x);
+        clickY.push(data.y);
+        clickDrag.push(data.dragging);
+        clickRadius.push(data.radius);
+        clickColor.push(data.color);
+        redraw();
     },
     // Init.
     init = function () {
-	canvas = document.createElement('canvas');
-	canvas.setAttribute('width', canvasWidth);
-	canvas.setAttribute('height', canvasHeight);
-	canvas.setAttribute('id', 'canvas');
-	canvasDiv.appendChild(canvas);
-	if(typeof G_vmlCanvasManager != 'undefined') {
-	    canvas = G_vmlCanvasManager.initElement(canvas);
-	}
-	context = canvas.getContext("2d");
+        canvas = document.createElement('canvas');
+        canvas.setAttribute('width', canvasWidth);
+        canvas.setAttribute('height', canvasHeight);
+        canvas.setAttribute('id', 'canvas');
+        canvasDiv.appendChild(canvas);
+        if (typeof G_vmlCanvasManager != 'undefined') {
+            canvas = G_vmlCanvasManager.initElement(canvas);
+        }
+        context = canvas.getContext("2d");
 
-	createUserEvents();
+        createUserEvents();
     };
     return {
-	init: init
+        init: init,
+        receiveData:receiveData
     };
+    
 }());
 
 pizarrita.init();
 $('.section-container').hide();
 
-$('#chatSelector').click( function () {
-	$('#myNotesSection').hide();
-	$('#bestNotesSection').hide();
-	$('#professorNotesSection').hide();
-	$('#chatSection').toggle();
+$('#chatSelector').click(function () {
+    $('#myNotesSection').hide();
+    $('#bestNotesSection').hide();
+    $('#professorNotesSection').hide();
+    $('#chatSection').toggle();
 });
 
-$('#myNotesSelector').click( function () {
-	$('#chatSection').hide();
-	$('#bestNotesSection').hide();
-	$('#professorNotesSection').hide();
-	$('#myNotesSection').toggle();
+$('#myNotesSelector').click(function () {
+    $('#chatSection').hide();
+    $('#bestNotesSection').hide();
+    $('#professorNotesSection').hide();
+    $('#myNotesSection').toggle();
 });
 
-$('#bestNotesSelector').click( function () {
-	$('#chatSection').hide();
-	$('#myNotesSection').hide();
-	$('#professorNotesSection').hide();
-	$('#bestNotesSection').toggle();
+$('#bestNotesSelector').click(function () {
+    $('#chatSection').hide();
+    $('#myNotesSection').hide();
+    $('#professorNotesSection').hide();
+    $('#bestNotesSection').toggle();
 });
 
-$('#professorNotesSelector').click( function () {
-	$('#chatSection').hide();
-	$('#myNotesSection').hide();
-	$('#bestNotesSection').hide();
-	$('#professorNotesSection').toggle();
+$('#professorNotesSelector').click(function () {
+    $('#chatSection').hide();
+    $('#myNotesSection').hide();
+    $('#bestNotesSection').hide();
+    $('#professorNotesSection').toggle();
 });
 
 // Send message to CourseClass chat.
-$('#chat-textarea').keyup( function (e) {
-	if(e.keyCode == 13) {
-		var message = {"message": $(this).val(), "user": "me"};
-		socketChat.emit("message_to_server", message);
-		$('#chat-textarea').val('');
-	}
+$('#chat-textarea').keyup(function (e) {
+    if (e.keyCode == 13) {
+        var message = { "message": $(this).val(), "user": "me" };
+        socketChat.emit("message_to_server", message);
+        $('#chat-textarea').val('');
+    }
 });
+
+//socket board
 var socketBoard = io.connect("http://localhost:9090/wboard");
+
+socketBoard.on('receive_datas', function (datas) {
+//    alert(JSON.stringify(datas)+"  recibidos");
+    pizarrita.receiveData(datas);
+});
 
 /* Call socket chat */
 var socketChat = io.connect("http://localhost:9090/chat"); // Socket Chat
-socketChat.on("message", function(message) {
-	$('.chat-section-messages').append('<div class="talk-bubble tri-right left-top round"><span class="msg-sender">' + message.user + '</span><div class="talktext"><p>' + message.message + '</p></div></div>');
-	$('#chat-textarea').val('');
+socketChat.on("message", function (message) {
+    $('.chat-section-messages').append('<div class="talk-bubble tri-right left-top round"><span class="msg-sender">' + message.user + '</span><div class="talktext"><p>' + message.message + '</p></div></div>');
+    $('#chat-textarea').val('');
 });
 
-socketChat.on("message_to_client", function(message) {
-	$('.chat-section-messages').append('<div class="talk-bubble tri-left right-top response-bubble round"><span class="msg-sender">' + message.user +'</span><div class="talktext"><p>' + message.message + '</p></div></div>');
+socketChat.on("message_to_client", function (message) {
+    $('.chat-section-messages').append('<div class="talk-bubble tri-left right-top response-bubble round"><span class="msg-sender">' + message.user + '</span><div class="talktext"><p>' + message.message + '</p></div></div>');
 });
 
 /* send pizarrita */
