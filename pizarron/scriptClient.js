@@ -77,29 +77,29 @@
     createUserEvents = function () {
         var $canvas = $('#canvas');
 
-        $canvas.mousedown(function (e) {
-            var mouseX = e.pageX - this.offsetLeft,
-		    mouseY = e.pageY - this.offsetTop;
+        //$canvas.mousedown(function (e) {
+        //    var mouseX = e.pageX - this.offsetLeft,
+		//    mouseY = e.pageY - this.offsetTop;
 
-            paint = true;
-            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-            redraw();
-        });
+        //    paint = true;
+        //    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+        //    redraw();
+        //});
 
-        $canvas.mousemove(function (e) {
-            if (paint) {
-                addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-                redraw();
-            }
-        });
+        //$canvas.mousemove(function (e) {
+        //    if (paint) {
+        //        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+        //        redraw();
+        //    }
+        //});
 
-        $canvas.mouseup(function (e) {
-            paint = false;
-        });
+        //$canvas.mouseup(function (e) {
+        //    paint = false;
+        //});
 
-        $canvas.mouseleave(function (e) {
-            paint = false;
-        });
+        //$canvas.mouseleave(function (e) {
+        //    paint = false;
+        //});
 
         $('#toolsClearBtn').click(function () {
             clearCanvas();
@@ -140,21 +140,23 @@
         $('#joinRoom').click(function () {
             joinRoom();
         });
-        $('#joinRoom2').click(function () {
-            joinRoom2();
-        })
+        $('#leaveRoom').click(function () {
+            leaveRoom();
+        });
     },
     joinRoom = function () {
         if (!joined) {
-            socketBoard.emit('join_room', currentRoom);
+            currentRoom = $('#room').val();
+            socketBoard.emit('join_room', { room: currentRoom, role: 'student' });
             joined = true;
         }
     },
-    joinRoom2 = function () {
-        //if (!joined) {
-        socketBoard.emit('join_room', 'room002');
-        joined = true;
-        //}
+    leaveRoom = function () {
+        if(joined)
+        {
+            socketBoard.emit('leave_room', currentRoom);
+            joined = false;
+        }
     },
     //only teacher can send data
     //sentData = function (x, y) {
@@ -170,12 +172,29 @@
     //},
     //receiveData
     receiveData = function (data) {
-        clickX.push(data.x);
-        clickY.push(data.y);
-        clickDrag.push(data.dragging);
-        clickRadius.push(data.radius);
-        clickColor.push(data.color);
-        redraw();
+        if (data != null) {
+            for (var i = 0; i < data.length; i++) {
+                console.log(JSON.stringify(data[i]));
+                clickX.push(data[i].x);
+                clickY.push(data[i].y);
+                clickDrag.push(data[i].dragging);
+                clickRadius.push(data[i].radius);
+                clickColor.push(data[i].color);
+                backgroundColor = data[i].background;
+                if (data[i].x < 0) {
+                    $('#canvasDiv').css('background-color', backgroundColor);
+                    //backgroundColor = $(this).data('blackboard-color');
+                    redraw();
+                    $('.changeBlackboardColor').css('border', '');
+                    $(this).css('border', 'solid 3px black');
+                }
+                redraw();
+            }
+        }
+        else
+        {
+            clearCanvas();
+        }
     },
     // Init.
     init = function () {
@@ -237,9 +256,11 @@ $('#chat-textarea').keyup(function (e) {
         $('#chat-textarea').val('');
     }
 });
+//my IP
+var host = "http://192.168.137.1"
 
 //socket board
-var socketBoard = io.connect("http://localhost:9090/wboard");
+var socketBoard = io.connect(host+":9090/wboard");
 
 socketBoard.on('receive_datas', function (datas) {
 //    alert(JSON.stringify(datas)+"  recibidos");
@@ -247,7 +268,7 @@ socketBoard.on('receive_datas', function (datas) {
 });
 
 /* Call socket chat */
-var socketChat = io.connect("http://localhost:9090/chat"); // Socket Chat
+var socketChat = io.connect(host + ":9090/chat"); // Socket Chat
 socketChat.on("message", function (message) {
     $('.chat-section-messages').append('<div class="talk-bubble tri-right left-top round"><span class="msg-sender">' + message.user + '</span><div class="talktext"><p>' + message.message + '</p></div></div>');
     $('#chat-textarea').val('');

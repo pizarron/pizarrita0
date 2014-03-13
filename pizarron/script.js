@@ -104,6 +104,7 @@ var pizarrita = ( function () {
 
         $('#toolsClearBtn').click(function () {
             clearCanvas();
+            sentData(-10, -10, false, true);
         });
 
         $('.changeColor').click(function () {
@@ -135,33 +136,48 @@ var pizarrita = ( function () {
             redraw();
             $('.changeBlackboardColor').css('border', '');
             $(this).css('border', 'solid 3px black');
+            sentData(-10, -10, false);
         });
         
-        //join curren room
+        //join current room
         $('#joinRoom').click(function () {
             joinRoom();
+        })
+        $('#endClass').click(function () {
+            endClass();
         })
     },
     joinRoom = function () {
         if (!joined) {
-            socketBoard.emit('join_room', currentRoom);
+            currentRoom = $('#room').val();
+            alert(currentRoom);
+            socketBoard.emit('join_room', { room: currentRoom, role: 'teacher' });
             joined = true;
         }
     },
+    endClass = function () {
+        if(joined)
+        {
+            socketBoard.emit('leave_room', currentRoom);
+            joined = false;
+        }
+    },
     //only teacher can send data
-    sentData = function (x, y, dragging) {
+    sentData = function (x, y, dragging,clear) {
         var color = selectedColor;
         if (erasingOn) {
             color = 'background';
         }
         socketBoard.emit('send_data', {
             room: currentRoom,
+            clear: clear,
             data: {
                 x: x,
                 y: y,
                 radius: selectedRadius,
                 color: color,
                 dragging: dragging,
+                background: backgroundColor,
             }
         });
     },
@@ -183,7 +199,7 @@ var pizarrita = ( function () {
 	init: init
     };
 }());
-
+    
 pizarrita.init();
 $('.section-container').hide();
 
@@ -223,10 +239,11 @@ $('#chat-textarea').keyup( function (e) {
 		$('#chat-textarea').val('');
 	}
 });
-var socketBoard = io.connect("http://localhost:9090/wboard");
+//my IP
+var host="http://192.168.137.1"
 
 /* Call socket chat */
-var socketChat = io.connect("http://localhost:9090/chat"); // Socket Chat
+var socketChat = io.connect(host+":9090/chat"); // Socket Chat
 socketChat.on("message", function(message) {
 	$('.chat-section-messages').append('<div class="talk-bubble tri-right left-top round"><span class="msg-sender">' + message.user + '</span><div class="talktext"><p>' + message.message + '</p></div></div>');
 	$('#chat-textarea').val('');
@@ -237,3 +254,5 @@ socketChat.on("message_to_client", function(message) {
 });
 
 /* send pizarrita */
+var socketBoard = io.connect(host + ":9090/wboard");
+
